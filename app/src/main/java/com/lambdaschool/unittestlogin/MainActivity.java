@@ -1,11 +1,11 @@
 package com.lambdaschool.unittestlogin;
 
+import android.app.ProgressDialog;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.lambdaschool.unittestlogin.util.EmailValidator;
@@ -17,7 +17,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String MOCKED_PASSWORD = "password";
 
     EditText inputEmail, inputPassword;
-    public Snackbar snackBar;
+    public Snackbar       successSnackBar;
+    public ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
         inputEmail = findViewById(R.id.input_email);
         inputPassword = findViewById(R.id.input_password);
 
-        snackBar = Snackbar.make(findViewById(R.id.login_parent), "Login successful", Snackbar.LENGTH_INDEFINITE);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Signing in...");
+        successSnackBar = Snackbar.make(findViewById(R.id.login_parent), "Login successful", Snackbar.LENGTH_INDEFINITE);
 
         findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,14 +41,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void doLogin() {
+        progressDialog.show();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                progressDialog.hide();
                 if(EmailValidator.isValidEmail(inputEmail.getText())) {
                     // check credentials against server
-                    if(inputEmail.getText().equals(MOCKED_EMAIL) &&
-                       inputEmail.getText().equals(MOCKED_PASSWORD)) {
-                        snackBar.show();
+                    if(inputEmail.getText().toString().equals(MOCKED_EMAIL) &&
+                       inputPassword.getText().toString().equals(MOCKED_PASSWORD)) {
+                        successSnackBar.show();
                     }
                 }
             }

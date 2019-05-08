@@ -13,11 +13,11 @@ import com.lambdaschool.unittestlogin.util.EmailValidator;
 public class MainActivity extends AppCompatActivity {
 
 
-    public static final String MOCKED_EMAIL = "student@lambdaschool.com";
+    public static final String MOCKED_EMAIL    = "student@lambdaschool.com";
     public static final String MOCKED_PASSWORD = "password";
 
     EditText inputEmail, inputPassword;
-    public Snackbar       successSnackBar;
+    public Snackbar successSnackBar, failureSnackBar;
     public ProgressDialog progressDialog;
 
     @Override
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Signing in...");
         successSnackBar = Snackbar.make(findViewById(R.id.login_parent), "Login successful", Snackbar.LENGTH_INDEFINITE);
+        failureSnackBar = Snackbar.make(findViewById(R.id.login_parent), "Login failed", Snackbar.LENGTH_INDEFINITE);
 
         findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,14 +47,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 progressDialog.hide();
-                if(EmailValidator.isValidEmail(inputEmail.getText())) {
-                    // check credentials against server
-                    if(inputEmail.getText().toString().equals(MOCKED_EMAIL) &&
-                       inputPassword.getText().toString().equals(MOCKED_PASSWORD)) {
-                        successSnackBar.show();
-                    }
+                if (checkLogin(inputEmail.getText().toString(), inputPassword.getText().toString())) {
+                    successSnackBar.show();
+                } else {
+                    failureSnackBar.show();
                 }
             }
         }, 2000);
+    }
+
+    static boolean checkLogin(String inputEmail, String inputPassword) {
+        return EmailValidator.isValidEmail(inputEmail) &&
+               inputEmail.equals(MOCKED_EMAIL) &&
+               inputPassword.equals(MOCKED_PASSWORD);
     }
 }

@@ -22,6 +22,22 @@ public class SignInTest {
     }
 
     @Test
+    public void mainActivity_SignInProgressIndicatorShown() {
+        mainActivity.doLogin();
+        assertThat(mainActivity.progressDialog.isShowing(), equalTo(true));
+    }
+
+    @Test
+    // test not working properly
+    public void mainActivity_SignInProgressIndicatorDisappears() {
+        mainActivity.doLogin();
+
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+        assertThat(mainActivity.progressDialog.isShowing(), equalTo(false));
+    }
+
+    @Test
 //    emailValidator_CorrectEmailSimple_ReturnsTrue
     public void mainActivity_SuccessfulSignIn() {
 
@@ -34,6 +50,7 @@ public class SignInTest {
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
         assertThat(mainActivity.successSnackBar.isShown(), equalTo(true));
+        assertThat(mainActivity.failureSnackBar.isShown(), equalTo(false));
 //        assertTrue(mainActivity.successSnackBar.isShown());
     }
 
@@ -49,6 +66,7 @@ public class SignInTest {
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
         assertThat(mainActivity.successSnackBar.isShown(), equalTo(false));
+        assertThat(mainActivity.failureSnackBar.isShown(), equalTo(true));
 //        assertTrue(mainActivity.successSnackBar.isShown());
     }
 }

@@ -9,7 +9,6 @@ import org.robolectric.shadows.ShadowLooper;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class SignInTest {

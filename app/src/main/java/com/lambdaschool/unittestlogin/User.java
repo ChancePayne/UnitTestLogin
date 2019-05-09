@@ -34,4 +34,8 @@ public class User implements Serializable {
     public String getLastName() {
         return LastName;
     }
+
+    public String getDisplayName() {
+        return LastName + ", " + firstName;
+    }
 }

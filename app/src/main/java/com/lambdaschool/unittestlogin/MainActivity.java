@@ -1,6 +1,8 @@
 package com.lambdaschool.unittestlogin;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +22,14 @@ public class MainActivity extends AppCompatActivity {
     public Snackbar successSnackBar, failureSnackBar;
     public ProgressDialog progressDialog;
 
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        context = this;
 
         inputEmail = findViewById(R.id.input_email);
         inputPassword = findViewById(R.id.input_password);
@@ -49,11 +55,17 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.hide();
                 if (checkLogin(inputEmail.getText().toString(), inputPassword.getText().toString())) {
                     successSnackBar.show();
+
+                    // receive userdata back from server
+                    Intent intent = new Intent(getApplicationContext(), AccountDetailsActivity.class);
+                    intent.putExtra(User.TAG, new User("Cat", "tester", MOCKED_EMAIL, "first", "last"));
+                    startActivity(intent);
+
                 } else {
                     failureSnackBar.show();
                 }
             }
-        }, 2000);
+        }, 0);
     }
 
     static boolean checkLogin(String inputEmail, String inputPassword) {

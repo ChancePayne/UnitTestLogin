@@ -48,16 +48,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void doLogin() {
-        progressDialog.show();
-        new Handler().postDelayed(new Runnable() {
+//        progressDialog.show();
+//
+//        progressDialog.hide();
+        if (checkLogin(inputEmail.getText().toString(), inputPassword.getText().toString())) {
+            successSnackBar.show();
+
+            // receive userdata back from server, then launch detail activity
+            Intent intent = new Intent(context, AccountDetailsActivity.class);
+            intent.putExtra(User.TAG, new User("Cat", "tester", MOCKED_EMAIL, "first", "last"));
+            startActivity(intent);
+
+        } else {
+            failureSnackBar.show();
+        }
+
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 progressDialog.hide();
                 if (checkLogin(inputEmail.getText().toString(), inputPassword.getText().toString())) {
                     successSnackBar.show();
 
-                    // receive userdata back from server
-                    Intent intent = new Intent(getApplicationContext(), AccountDetailsActivity.class);
+                    // receive userdata back from server, then launch detail activity
+                    Intent intent = new Intent(context, AccountDetailsActivity.class);
                     intent.putExtra(User.TAG, new User("Cat", "tester", MOCKED_EMAIL, "first", "last"));
                     startActivity(intent);
 
@@ -65,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     failureSnackBar.show();
                 }
             }
-        }, 0);
+        }, 2000);*/
     }
 
     static boolean checkLogin(String inputEmail, String inputPassword) {
